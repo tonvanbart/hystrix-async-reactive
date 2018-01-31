@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.vanbart.hystrixasyncreactive.service.CapitalizeService;
 import org.vanbart.hystrixasyncreactive.service.GreetTextService;
-import rx.Observable;
 import rx.Single;
-import rx.schedulers.Schedulers;
 
 @Controller
 public class HelloController {
@@ -54,8 +52,6 @@ public class HelloController {
         long start = System.currentTimeMillis();
         Single<String> greetText = greetTextService.getGreetText();
         Single<String> capitalize = capitalizeService.capitalize(name);
-
-        String[] answer = new String[1];
 
         String value = Single.zip(greetText, capitalize, (text, cap) -> text + ", " + cap)
                 .toBlocking()
