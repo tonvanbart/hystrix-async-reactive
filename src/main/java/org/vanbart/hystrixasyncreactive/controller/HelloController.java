@@ -34,8 +34,13 @@ public class HelloController {
         log.info("greeting({})", name);
         long start = System.currentTimeMillis();
         final String[] results = new String[2];
-        greetTextService.getGreetText().subscribe(greeting -> results[0] = greeting);
-        capitalizeService.capitalize(name).subscribe(capitalized -> results[1] = capitalized);
+
+        // these do not work anymore since the services operate on a different thread and did not complete yet
+//        greetTextService.getGreetText().subscribe(greeting -> results[0] = greeting);
+//        capitalizeService.capitalize(name).subscribe(capitalized -> results[1] = capitalized);
+
+        results[0] = greetTextService.getGreetText().toBlocking().value();
+        results[1] = capitalizeService.capitalize(name).toBlocking().value();
 
         String result = results[0] + ", " + results[1];
         log.info("return '{}' in {} ms", result, System.currentTimeMillis() - start);
