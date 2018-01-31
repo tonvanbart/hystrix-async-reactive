@@ -52,23 +52,11 @@ public class HelloController {
 
         String[] answer = new String[1];
 
-//        Single<String> zip = Single.zip(greetText.subscribeOn(Schedulers.io()),
-//                capitalize.subscribeOn((Schedulers.io())),
-//                (greet, capname) -> greet + ", " + capname);
+        String value = Single.zip(greetText, capitalize, (text, cap) -> text + ", " + cap)
+                .toBlocking()
+                .value();
 
-//        zip.subscribe(concatenated -> answer[0] = concatenated);
-
-//        String[] complete = new String[];
-//        greetText.zipWith(capitalize, (cr, cap) -> cr + ", " + cap)
-//            .subscribe(str -> complete[0] = str);
-
-        // the array trick is here to use a final variable to return the results
-        final String[] result = new String[1];
-        Single.zip(greetText, capitalize, (gt, cap) -> gt + ", " + cap)
-////                .observeOn(Schedulers.io())
-                .subscribe(txt -> result[0] = txt);
-
-        log.info("return '{}' in {} ms", answer[0], System.currentTimeMillis() - start);
-        return answer[0];
+        log.info("return '{}' in {} ms", value, System.currentTimeMillis() - start);
+        return value;
     }
 }
