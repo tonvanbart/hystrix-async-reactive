@@ -1,0 +1,1 @@
+Work in progress: Spring `@HystrixCommand` combined with RxJava `Single`.
